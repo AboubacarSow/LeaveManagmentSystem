@@ -1,4 +1,4 @@
-﻿@model LeaveManagmentSystem.Web.Data.Entities.LeaveType
+﻿@model LeaveTypeEditVM
 
 @{
     ViewData["Title"] = $"Edit {Model.Name}";
@@ -20,8 +20,8 @@
             <br />
             <div class="form-group">
                 <label  class="control-label my-1"> Number Of Days</label>
-                <input asp-for="NumberOfDays" class="form-control" />
-                <span asp-validation-for="NumberOfDays" class="text-danger"></span>
+                <input asp-for="Days" class="form-control" />
+                <span asp-validation-for="Days" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">
