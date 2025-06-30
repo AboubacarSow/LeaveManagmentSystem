@@ -1,0 +1,43 @@
+﻿@model LeaveManagmentSystem.Web.Data.Entities.Period
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Period</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="StartOn" class="control-label"></label>
+                <input type="date" asp-for="StartOn" class="form-control" />
+                <span asp-validation-for="StartOn" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label  asp-for="EndOn" class="control-label"></label>
+                <input type="date" asp-for="EndOn" class="form-control" />
+                <span asp-validation-for="EndOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

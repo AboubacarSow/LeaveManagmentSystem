@@ -1,151 +1,150 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagmentSystem.Web.Data;
-using LeaveManagmentSystem.Web.Data.Entities;
 using LeaveManagmentSystem.Web.Models.LeaveTypes;
-using AutoMapper;
-using LeaveManagmentSystem.Web.Services;
+using Microsoft.AspNetCore.Authorization;
+using LeaveManagmentSystem.Web.Services.LeaveTypes;
 
-namespace LeaveManagmentSystem.Web.Controllers
+namespace LeaveManagmentSystem.Web.Controllers;
+
+
+[Authorize(Roles ="Administrator")]
+public class LeaveTypeController(ILeaveTypeService leaveTypeService) : Controller
 {
-    public class LeaveTypeController(ILeaveTypeService leaveTypeService) : Controller
+   
+    private const string NameAlreadyExistsMessage = "This leave type already exists in the database";
+
+  
+
+    // GET: LeaveType
+    public async Task<IActionResult> Index()
     {
-       
-        private const string NameAlreadyExistsMessage = "This leave type already exists in the database";
+       var viewData= await leaveTypeService.GetAllAsync();
+        return View(viewData);
+    }
 
-      
-
-        // GET: LeaveType
-        public async Task<IActionResult> Index()
+    // GET: LeaveType/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
         {
-           var viewData= await leaveTypeService.GetAllAsync();
-            return View(viewData);
+            return NotFound();
         }
-
-        // GET: LeaveType/Details/5
-        public async Task<IActionResult> Details(int? id)
+        int index=id.Value;
+        var viewdata = await leaveTypeService.GetByIdAsync<LeaveTypeReadOnlyVM>(index);
+        if (viewdata == null)
         {
-            if (id == null)
+            return NotFound();
+        }
+        ;   
+        return View(viewdata);
+    }
+
+    // GET: LeaveType/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: LeaveType/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("Id,Name,Days")] LeaveTypeCreateVM leaveType)
+    {
+        if (ModelState.IsValid)
+        {
+            if(await leaveTypeService.CheckifLeaveTypeNameExists(leaveType.Name))
             {
-                return NotFound();
+                ModelState.AddModelError(nameof(leaveType.Name), NameAlreadyExistsMessage);
+                return View(leaveType);
             }
-            int index=id.Value;
-            var viewdata = await leaveTypeService.GetByIdAsync<LeaveTypeReadOnlyVM>(index);
-            if (viewdata == null)
-            {
-                return NotFound();
-            }
-            ;   
-            return View(viewdata);
+           await leaveTypeService.Create(leaveType);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(leaveType);
+    }
+
+
+    // GET: LeaveType/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        var viewdata = await leaveTypeService.GetByIdAsync<LeaveTypeEditVM>(id.Value);
+        if (viewdata == null)
+        {
+            return NotFound();
+        }
+        return View(viewdata);
+    }
+
+    // POST: LeaveType/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Days")] LeaveTypeEditVM leaveType)
+    {
+        if (id != leaveType.Id)
+        {
+            return NotFound();
         }
 
-        // GET: LeaveType/Create
-        public IActionResult Create()
+        if (ModelState.IsValid)
         {
-            return View();
-        }
-
-        // POST: LeaveType/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Days")] LeaveTypeCreateVM leaveType)
-        {
-            if (ModelState.IsValid)
+            try
             {
-                if(await leaveTypeService.CheckifLeaveTypeNameExists(leaveType.Name))
+                if (await leaveTypeService.CheckifLeaveTypeNameExistsForEdit(leaveType))
                 {
                     ModelState.AddModelError(nameof(leaveType.Name), NameAlreadyExistsMessage);
                     return View(leaveType);
                 }
-               await leaveTypeService.Create(leaveType);
-                return RedirectToAction(nameof(Index));
+               await leaveTypeService.Edit(leaveType);
             }
-            return View(leaveType);
-        }
-
-
-        // GET: LeaveType/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            catch (DbUpdateConcurrencyException)
             {
-                return NotFound();
-            }
-            var viewdata = await leaveTypeService.GetByIdAsync<LeaveTypeEditVM>(id.Value);
-            if (viewdata == null)
-            {
-                return NotFound();
-            }
-            return View(viewdata);
-        }
-
-        // POST: LeaveType/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Days")] LeaveTypeEditVM leaveType)
-        {
-            if (id != leaveType.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (!leaveTypeService.LeaveTypeExists(leaveType.Id))
                 {
-                    if (await leaveTypeService.CheckifLeaveTypeNameExistsForEdit(leaveType))
-                    {
-                        ModelState.AddModelError(nameof(leaveType.Name), NameAlreadyExistsMessage);
-                        return View(leaveType);
-                    }
-                   await leaveTypeService.Edit(leaveType);
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!leaveTypeService.LeaveTypeExists(leaveType.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(leaveType);
-        }
-
-
-        // GET: LeaveType/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var leaveType = await leaveTypeService.GetByIdAsync<LeaveTypeReadOnlyVM>(id.Value);
-            if (leaveType == null)
-            {
-                return NotFound();
-            }
-
-            return View(leaveType);
-        }
-
-        // POST: LeaveType/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-           await leaveTypeService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
-
-        
+        return View(leaveType);
     }
+
+
+    // GET: LeaveType/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        var leaveType = await leaveTypeService.GetByIdAsync<LeaveTypeReadOnlyVM>(id.Value);
+        if (leaveType == null)
+        {
+            return NotFound();
+        }
+
+        return View(leaveType);
+    }
+
+    // POST: LeaveType/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+       await leaveTypeService.Remove(id);
+        return RedirectToAction(nameof(Index));
+    }
+
+    
 }

@@ -6,7 +6,7 @@ using LeaveManagmentSystem.Web.Models.LeaveTypes;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace LeaveManagmentSystem.Web.Services;
+namespace LeaveManagmentSystem.Web.Services.LeaveTypes;
 
 public class LeaveTypeService : ILeaveTypeService
 {
