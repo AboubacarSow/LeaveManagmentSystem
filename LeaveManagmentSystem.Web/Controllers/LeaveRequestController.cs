@@ -13,9 +13,10 @@ namespace LeaveManagmentSystem.Web.Controllers;
 public class LeaveRequestController(ILeaveTypeService _leaveTypeServe,
     ILeaveRequestService _leaveRequestService) : Controller
 {
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var modelVm = await _leaveRequestService.GetEmployeeLeaveRequests();
+        return View(modelVm);
     }
     [HttpGet]
     public async Task<IActionResult> Create()

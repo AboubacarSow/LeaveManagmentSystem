@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Humanizer;
 using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Data.Entities;
+using LeaveManagmentSystem.Web.Data.Enums;
 using LeaveManagmentSystem.Web.Data.Migrations;
 using LeaveManagmentSystem.Web.Models.LeaveRequests;
 using Microsoft.AspNetCore.Identity;
@@ -32,7 +34,7 @@ public class LeaveRequestService(IMapper _mapper,UserManager<ApplicationUser> _u
         leaveRequest.EmployeeId = user.Id;
 
         //set leaveRequestStatusId
-        leaveRequest.LeaveRequestStatusId=(int)LeaveRequestStatus.Pending;
+        leaveRequest.LeaveRequestStatusId=(int)LeaveRequestStatusEnum.Pending;
 
         //add to database
         _context.Add(leaveRequest);
@@ -49,9 +51,21 @@ public class LeaveRequestService(IMapper _mapper,UserManager<ApplicationUser> _u
     }
    
 
-    public Task<List<LeaveRequestReadOnlyVM>> GetEmployeeLeaveRequests()
+    public async Task<List<LeaveRequestReadOnlyVM>> GetEmployeeLeaveRequests()
     {
-        throw new NotImplementedException();
+        var user = await GetLoggeedUserAsync();
+        var leaveRequests = await _context.LeaveRequests
+            .Include(l=>l.LeaveType)
+            .Where(l=>l.EmployeeId==user.Id).ToListAsync();
+        return [.. leaveRequests.Select(l => new LeaveRequestReadOnlyVM
+        {
+            Id = l.Id,
+            StartDate = l.StartDate,
+            EndDate = l.EndDate,
+            NumberOfDays = l.EndDate.DayNumber - l.StartDate.DayNumber,
+            LeaveType = l.LeaveType.Name,
+            LeaveRequestStatus=(LeaveRequestStatusEnum)l.LeaveRequestStatusId,
+        })];
     }
 
     public Task<ReviewLeaveRequestVM> GetLeaveRequestForReview(int id)
@@ -91,11 +105,3 @@ public interface ILeaveRequestService
     Task<ReviewLeaveRequestVM> GetLeaveRequestForReview(int id);
 }
 
-public enum LeaveRequestStatus 
-{ 
-    Pending=1,
-    Approved=2,
-    Declined=3,
-    Cancelled=4
-
-}
