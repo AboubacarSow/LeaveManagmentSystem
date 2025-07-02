@@ -14,6 +14,7 @@ public class LeaveRequestReadOnlyVM
     public int NumberOfDays {  get; set; }
     [Display(Name = "Leave Type")]
     public string LeaveType { get; set; }=string.Empty;
+    [Display(Name = "Leave Request Status")]
     public LeaveRequestStatusEnum LeaveRequestStatus { get; set; }
 
 }

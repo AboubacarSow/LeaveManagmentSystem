@@ -19,9 +19,11 @@ public class LeaveRequestService(IMapper _mapper,UserManager<ApplicationUser> _u
         throw new NotImplementedException();
     }
 
-    public Task CancelLeaveRequest(int leaveRequestId)
+    public async Task CancelLeaveRequest(int leaveRequestId)
     {
-        throw new NotImplementedException();
+        var leaveRequest= await _context.LeaveRequests.FindAsync(leaveRequestId);
+        leaveRequest.LeaveRequestStatusId = (int)LeaveRequestStatusEnum.Cancelled;
+        await _context.SaveChangesAsync();
     }
 
     public async Task CreateLeaveRequest(LeaveRequestCreateVM model)
@@ -40,12 +42,13 @@ public class LeaveRequestService(IMapper _mapper,UserManager<ApplicationUser> _u
         _context.Add(leaveRequest);
 
         //deduct allocation based on the request
-        var numberofDays = model.EndDate.DayNumber - model.StartDate.DayNumber;
-        var allocation = await _context
-            .LeaveAllocations
-            .FirstOrDefaultAsync(l=>l.LeaveTypeId==model.LeaveTypeId 
-                                && l.EmployeeId==leaveRequest.EmployeeId);
-        allocation.Days-=numberofDays;
+        // I don't think it's logical to deduct here the related allocation
+        //var numberofDays = model.EndDate.DayNumber - model.StartDate.DayNumber;
+        //var allocation = await _context
+        //    .LeaveAllocations
+        //    .FirstOrDefaultAsync(l=>l.LeaveTypeId==model.LeaveTypeId 
+        //                        && l.EmployeeId==leaveRequest.EmployeeId);
+        //allocation.Days-=numberofDays;
         
         await _context.SaveChangesAsync();
     }

@@ -33,7 +33,7 @@ public class LeaveRequestController(ILeaveTypeService _leaveTypeServe,
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateAsync(LeaveRequestCreateVM model)
+    public async Task<IActionResult> Create(LeaveRequestCreateVM model)
     {
         if(await _leaveRequestService.RequestDatesExceedAllocation(model))
         {
@@ -49,10 +49,12 @@ public class LeaveRequestController(ILeaveTypeService _leaveTypeServe,
         await _leaveRequestService.CreateLeaveRequest(model);
         return RedirectToAction(nameof(Details),nameof(LeaveAllocation));
     }
-
-    public IActionResult Cancel(int id)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Cancel(int id)
     {
-        return View();
+        await _leaveRequestService.CancelLeaveRequest(id);
+        return RedirectToAction(nameof(Index));
     }
     [Authorize(Roles =Roles.Administrator)]
     public IActionResult ListRequests()
