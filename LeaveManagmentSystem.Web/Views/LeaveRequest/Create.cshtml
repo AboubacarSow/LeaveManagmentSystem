@@ -1,0 +1,42 @@
+﻿@model LeaveRequestCreateVM
+
+@{
+    ViewData["Title"] = "Create a Leave Request";
+}
+
+
+<h2 class="text-dark"> Create a Leave Request</h2>
+<hr />
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-3">
+                <label asp-for="StartDate" class="control-label mb-1"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="EndDate" class="control-label mb-1"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="LeaveTypeId" class="control-label mb-1"></label>
+                <select asp-for="LeaveTypeId" class="form-select" asp-items="@Model.LeaveTypes"></select>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="RequestComments" class="control-label mb-1"></label>
+                <textarea asp-for="RequestComments" class="form-control" style="min-height:100px"></textarea>
+                <span asp-validation-for="RequestComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Details" asp-controller="LeaveAllocation" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

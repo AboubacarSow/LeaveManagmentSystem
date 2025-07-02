@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace LeaveManagmentSystem.Web.Services.LeaveTypes;
-
 public class LeaveTypeService : ILeaveTypeService
 {
     private readonly ApplicationDbContext _context;
@@ -71,5 +70,11 @@ public class LeaveTypeService : ILeaveTypeService
         var lowername = leaveTypeEdit.Name.ToLower();
         return await _context.LeaveTypes.AnyAsync(l => l.Name.ToLower().Equals(lowername)
         && l.Id != leaveTypeEdit.Id);
+    }
+
+    public async Task<bool> DaysExceedMaximum(int leaveTypeId, int days)
+    {
+        var leaveType= await _context.LeaveTypes.FindAsync(leaveTypeId);
+        return leaveType?.NumberOfDays < days;
     }
 }

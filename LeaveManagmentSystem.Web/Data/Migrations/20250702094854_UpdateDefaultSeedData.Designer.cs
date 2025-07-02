@@ -4,6 +4,7 @@ using LeaveManagmentSystem.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManagmentSystem.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250702094854_UpdateDefaultSeedData")]
+    partial class UpdateDefaultSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +105,7 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                         {
                             Id = "b6be7770-6c3d-42ce-97a7-7efdba0fb30a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f3448854-8957-4b4f-9316-e83a3e6dc4cb",
+                            ConcurrencyStamp = "152e516a-0c45-4813-a83a-61942ab5b823",
                             DateOfBirth = new DateOnly(1999, 12, 4),
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
@@ -111,9 +114,9 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHOlaPexbZX+1tAgxaIj9qoGNHQZhuLTno1HSchKyAE8X6sZAx1Ge2Z7BvDbWKPolQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE8Yj4LaHQ2x4wzHHuN/2UWrWa/1e+7fH+lqL4ud1yr+RPm1qbcAYsp57QHEuMRUmQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5c6befcb-9682-4bbe-ac77-f09cf4a3ed67",
+                            SecurityStamp = "4d24d753-2be3-49ba-a0ec-86c11242bae8",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });
@@ -149,89 +152,6 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                     b.HasIndex("PeriodId");
 
                     b.ToTable("LeaveAllocations");
-                });
-
-            modelBuilder.Entity("LeaveManagmentSystem.Web.Data.Entities.LeaveRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateOnly>("EndDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("LeaveRequestStatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LeaveTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RequestComments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReviewerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("LeaveRequestStatusId");
-
-                    b.HasIndex("LeaveTypeId");
-
-                    b.HasIndex("ReviewerId");
-
-                    b.ToTable("LeaveRequests");
-                });
-
-            modelBuilder.Entity("LeaveManagmentSystem.Web.Data.Entities.LeaveRequestStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LeaveRequestsStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Pending"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Approved"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Declined"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Cancelled"
-                        });
                 });
 
             modelBuilder.Entity("LeaveManagmentSystem.Web.Data.Entities.LeaveType", b =>
@@ -450,7 +370,7 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("LeaveManagmentSystem.Web.Data.Entities.LeaveType", "LeaveType")
-                        .WithMany("LeaveAllocations")
+                        .WithMany()
                         .HasForeignKey("LeaveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -466,39 +386,6 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                     b.Navigation("LeaveType");
 
                     b.Navigation("Period");
-                });
-
-            modelBuilder.Entity("LeaveManagmentSystem.Web.Data.Entities.LeaveRequest", b =>
-                {
-                    b.HasOne("LeaveManagmentSystem.Web.Data.Entities.ApplicationUser", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LeaveManagmentSystem.Web.Data.Entities.LeaveRequestStatus", "LeaveRequestStatus")
-                        .WithMany()
-                        .HasForeignKey("LeaveRequestStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LeaveManagmentSystem.Web.Data.Entities.LeaveType", "LeaveType")
-                        .WithMany()
-                        .HasForeignKey("LeaveTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LeaveManagmentSystem.Web.Data.Entities.ApplicationUser", "Reviewer")
-                        .WithMany()
-                        .HasForeignKey("ReviewerId");
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("LeaveRequestStatus");
-
-                    b.Navigation("LeaveType");
-
-                    b.Navigation("Reviewer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -550,11 +437,6 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("LeaveManagmentSystem.Web.Data.Entities.LeaveType", b =>
-                {
-                    b.Navigation("LeaveAllocations");
                 });
 #pragma warning restore 612, 618
         }

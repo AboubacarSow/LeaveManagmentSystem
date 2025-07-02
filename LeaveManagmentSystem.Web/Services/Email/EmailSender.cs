@@ -2,7 +2,6 @@
 using System.Net.Mail;
 
 namespace LeaveManagmentSystem.Web.Services.Email;
-
 public class EmailSender(IConfiguration _configuration) : IEmailSender
 {
     public async Task SendEmailAsync(string email, string subject, string htmlMessage)

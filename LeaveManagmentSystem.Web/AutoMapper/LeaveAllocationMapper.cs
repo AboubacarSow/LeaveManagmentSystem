@@ -9,6 +9,8 @@ public class LeaveAllocationMapper :Profile
     public LeaveAllocationMapper()
     {
         CreateMap<LeaveAllocation, LeaveAllocationVM>();
+        CreateMap<LeaveAllocation, LeaveAllocationEditVM>();
+        CreateMap<ApplicationUser, EmployeeListVM>();
         CreateMap<Period, PeriodVM>();
     }
 }

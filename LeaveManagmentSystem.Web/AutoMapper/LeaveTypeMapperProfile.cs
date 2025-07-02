@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using LeaveManagmentSystem.Web.Data.Entities;
 using LeaveManagmentSystem.Web.Models.LeaveTypes;
 
 namespace LeaveManagmentSystem.Web.AutoMapper;
-
 public class LeaveTypeMapperProfile : Profile
 {
     public LeaveTypeMapperProfile()
