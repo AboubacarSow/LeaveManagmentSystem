@@ -1,10 +1,10 @@
-﻿using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Models.LeaveAllocations;
-using LeaveManagmentSystem.Web.Services.LeaveAllocations;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
+﻿using LeaveManagmentSystem.Application.Models.LeaveAllocations;
+using LeaveManagmentSystem.Application.Services.LeaveAllocations;
+using LeaveManagmentSystem.Application.Services.LeaveTypes;
+using LeaveManagmentSystem.Common.Static;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 
 namespace LeaveManagmentSystem.Web.Controllers;

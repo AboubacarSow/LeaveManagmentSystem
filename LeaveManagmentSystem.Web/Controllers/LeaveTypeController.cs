@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagmentSystem.Web.Models.LeaveTypes;
+using LeaveManagmentSystem.Application.Models.LeaveTypes;
 using Microsoft.AspNetCore.Authorization;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
+using LeaveManagmentSystem.Application.Services.LeaveTypes;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 

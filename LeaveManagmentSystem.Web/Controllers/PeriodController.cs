@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using LeaveManagmentSystem.Web.Data;
 using Microsoft.AspNetCore.Authorization;
+using LeaveManagmentSystem.Data.Entities;
+using LeaveManagmentSystem.Data;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 

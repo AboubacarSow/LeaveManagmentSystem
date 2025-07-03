@@ -1,34 +1,24 @@
-using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Data;
-using LeaveManagmentSystem.Web.Data.Entities;
-using LeaveManagmentSystem.Web.Services.Email;
-using LeaveManagmentSystem.Web.Services.LeaveAllocations;
-using LeaveManagmentSystem.Web.Services.LeaveRequests;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
+using LeaveManagmentSystem.Application;
+using LeaveManagmentSystem.Common.Static;
+using LeaveManagmentSystem.Data;
+using LeaveManagmentSystem.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
-    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-builder.Services.AddScoped<ILeaveTypeService, LeaveTypeService>();  
-builder.Services.AddTransient<ILeaveAllocationService, LeaveAllocationService>(); 
-builder.Services.AddTransient<ILeaveRequestService, LeaveRequestService>(); 
-builder.Services.AddTransient<IEmailSender, EmailSender>(); 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddAuthorization(opt =>
-{
-    opt.AddPolicy("AdminSupervisorOnly", policy => policy.RequireRole(Roles.Administrator, Roles.Supervisor));
 
-});
+//configuring serilog
+builder.Host.UseSerilog((context, config) =>
+   config.ReadFrom.Configuration(context.Configuration)
+);
+// Add services to the container.
+builder.Services.AddDatabaseConfiguration(builder.Configuration);
+builder.Services.AddApplicationServices(); 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("AdminSupervisorOnly", policy => policy.RequireRole(Roles.Administrator, Roles.Supervisor));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()

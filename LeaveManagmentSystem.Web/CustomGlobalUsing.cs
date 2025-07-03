@@ -1,1 +1,1 @@
-﻿global using LeaveManagmentSystem.Web.Data.Entities;
+﻿global using LeaveManagmentSystem.Data.Entities;

@@ -1,7 +1,7 @@
-﻿using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Models.LeaveRequests;
-using LeaveManagmentSystem.Web.Services.LeaveRequests;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
+﻿using LeaveManagmentSystem.Application.Models.LeaveRequests;
+using LeaveManagmentSystem.Application.Services.LeaveRequests;
+using LeaveManagmentSystem.Application.Services.LeaveTypes;
+using LeaveManagmentSystem.Common.Static;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
