@@ -1,6 +1,12 @@
-﻿namespace LeaveManagmentSystem.Web.Models.LeaveRequests
+﻿using LeaveManagmentSystem.Web.Models.LeaveAllocations;
+using System.ComponentModel.DataAnnotations;
+
+namespace LeaveManagmentSystem.Web.Models.LeaveRequests;
+
+public class ReviewLeaveRequestVM : LeaveRequestReadOnlyVM
 {
-    public class ReviewLeaveRequestVM
-    {
-    }
+    public EmployeeListVM Employee { get; set; } = new();
+    [Display(Name ="Additional Information")]
+    public string? RequestComments { get; set; }
+
 }

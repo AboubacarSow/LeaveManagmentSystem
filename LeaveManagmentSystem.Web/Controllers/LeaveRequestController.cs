@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-using System.Threading.Tasks;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 [Authorize]
@@ -19,10 +18,10 @@ public class LeaveRequestController(ILeaveTypeService _leaveTypeServe,
         return View(modelVm);
     }
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public async Task<IActionResult> Create(int? leaveTypeId)
     {
         var leaveTypes = await _leaveTypeServe.GetAllAsync();
-        var leaveTypesList = new SelectList(leaveTypes, "Id", "Name");
+        var leaveTypesList = new SelectList(leaveTypes, "Id", "Name",leaveTypeId);
         var model = new LeaveRequestCreateVM
         {
             StartDate = DateOnly.FromDateTime(DateTime.Now),
@@ -56,19 +55,25 @@ public class LeaveRequestController(ILeaveTypeService _leaveTypeServe,
         await _leaveRequestService.CancelLeaveRequest(id);
         return RedirectToAction(nameof(Index));
     }
+    [Authorize(Policy = "AdminSupervisorOnly")]
+    public async Task<IActionResult> ListRequests()
+    {
+        var modelVm = await _leaveRequestService.AdminGetAllLeaveRequests();
+        return View(modelVm);
+    }
     [Authorize(Roles =Roles.Administrator)]
-    public IActionResult ListRequests()
-    {
-        return View();
-    }
     [HttpGet]
-    public IActionResult Review(int id)
+    public async Task<IActionResult> Review(int id)
     {
-        return View();
+        var model = await _leaveRequestService.GetLeaveRequestForReview(id);
+        return View(model);
     }
+    [Authorize(Roles = Roles.Administrator)]
     [HttpPost]
-    public IActionResult Review()
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Review(int id, bool approved)
     {
-        return View();
+        await _leaveRequestService.ReviewLeaveRequest(id, approved);
+        return RedirectToAction(nameof(ListRequests));
     }
 }

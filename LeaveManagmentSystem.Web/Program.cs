@@ -1,3 +1,4 @@
+using LeaveManagmentSystem.Web.Common;
 using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Data.Entities;
 using LeaveManagmentSystem.Web.Services.Email;
@@ -23,7 +24,11 @@ builder.Services.AddTransient<ILeaveRequestService, LeaveRequestService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>(); 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("AdminSupervisorOnly", policy => policy.RequireRole(Roles.Administrator, Roles.Supervisor));
 
+});
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()

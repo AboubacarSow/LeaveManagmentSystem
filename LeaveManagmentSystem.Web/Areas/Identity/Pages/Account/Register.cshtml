@@ -28,8 +28,8 @@
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.DateOfBirth" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.DateOfBirth">Data of Birth</label>
+                <input asp-for="Input.DateOfBirth" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="Input.DateOfBirth">Date of Birth</label>
                 <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
             </div>
 
@@ -91,4 +91,13 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(function(){
+            $('#Input.DateOfBirth').datepicker({
+                changeMonth:true,
+                changeYear:true
+            });
+        })
+    </script>
 }

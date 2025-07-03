@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LeaveManagmentSystem.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/jqueryui/themes/base/jquery-ui.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LeaveManagmentSystem.Web.styles.css" asp-append-version="true" />
 </head>
@@ -46,6 +47,7 @@
                                     <li>
                                         <a class="dropdown-item text-light " asp-area="" asp-controller="LeaveAllocation" asp-action="Index">View Employees</a>
                                     </li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="LeaveRequest" asp-action="ListRequests">Manage Requests</a></li>
                                     
                                 </ul>
                             </li>
@@ -75,6 +77,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/sweetalert/sweetalert.min.js"> </script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js"> </script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
