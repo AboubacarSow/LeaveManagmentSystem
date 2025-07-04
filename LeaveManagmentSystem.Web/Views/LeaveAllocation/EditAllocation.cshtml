@@ -4,7 +4,7 @@
     var username = string.Concat(Model.Employee?.FirstName, " ", Model.Employee?.LastName);
 }
 
-<h2 class="text-secondary">Editing @Model.LeaveType?.Name Allocation for @username</h2>
+<h2 class="text-secondary text-center">Editing @Model.LeaveType?.Name Allocation for @username</h2>
 
 <hr />
 <br />
@@ -22,7 +22,7 @@
             </div>
             <br />
             <div class="form-group">
-                <a asp-action="Index" class="btn btn-dark">Back to List</a> &nbsp;
+                <a asp-action="Index" class="btn btn-dark"> <i class="fa-solid fa-arrow-left"></i>Back to List</a> &nbsp;
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

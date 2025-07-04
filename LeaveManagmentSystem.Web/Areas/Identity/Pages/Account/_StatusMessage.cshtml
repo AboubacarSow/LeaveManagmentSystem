@@ -10,8 +10,15 @@
     var loginButton = Model.StartsWith("Thank");
     if (loginButton)
     {
-        <div class="d-flex">
+        <div class="row">
+            <div class="alert alert-@statusMessageClass alert-dismissible col-12" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                @Model
+            </div>
+            <div class="col-12">
             <a class="btn btn-primary" asp-area="Identity" asp-page="Account/Login">  Login</a>
+
+            </div>
         </div>
     }
 }

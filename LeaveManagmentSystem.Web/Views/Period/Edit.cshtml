@@ -4,40 +4,39 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h3 class="text-center">Editing Period @Model.Name</h3>
 
-<h4>Period</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row d-flex justify-content-center">
+    <div class="col-md-8 col-lg-8">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="StartOn" class="control-label"></label>
                 <input asp-for="StartOn" class="form-control" />
                 <span asp-validation-for="StartOn" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="EndOn" class="control-label"></label>
                 <input asp-for="EndOn" class="form-control" />
                 <span asp-validation-for="EndOn" class="text-danger"></span>
             </div>
+ 
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group d-flex justifiy-content-center g-2">
+                <input type="submit" value="Save" class="btn btn-primary me-3" />
+                <a asp-action="Index" class="btn btn-dark "> <i class="fa-solid fa-arrow-left"></i>   Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

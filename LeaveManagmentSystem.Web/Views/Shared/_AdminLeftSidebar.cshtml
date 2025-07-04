@@ -1,0 +1,146 @@
+﻿@inject SignInManager<ApplicationUser> signInManager
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<style>
+    .privacy:hover{
+        background-color:crimson;
+    }
+</style>
+
+
+<aside class="left-sidebar" style="top:0px; padding-top:15px">
+    <!-- Sidebar scroll-->
+    <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between mb-4">
+            <a href="/" class="text-nowrap logo-img fw-bolder text-primary">
+                <img src="~/images/logos/logo.png" alt="" style="width:40px;height:40px;border-radius:50%" />
+                Leave <span class="ms-2">Management </span>  <br /><span style="margin-left:40%">System</span>
+            </a>
+            <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                <i class="ti ti-x fs-6"></i>
+            </div>
+        </div>
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav">
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-action="Index" asp-controller="Home" asp-area="" aria-expanded="false">
+                        <i class="ti ti-home"></i>
+                        <span class="hide-menu">Home</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link privacy" aria-expanded="false" asp-action="Privacy" asp-controller="Home"
+                    asp-area="">
+                        <i class="ti ti-no-derivatives"></i>
+                        <span class="hide-menu">Privacy</span>
+                    </a>
+                </li>
+                <!-- ---------------------------------- -->
+                <!-- Dashboard -->
+                <!-- ---------------------------------- -->
+
+                <li>
+                    <span class="sidebar-divider lg"></span>
+                </li>
+                @if (signInManager.IsSignedIn(User) && User.IsInRole(Roles.Administrator))
+                {
+                    
+                    <li class="nav-small-cap">
+                        <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
+                        <span class="hide-menu">Management</span>
+                    </li>
+
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link justify-content-between"
+                           asp-area="" asp-controller="LeaveAllocation" asp-action="Index"
+                           aria-expanded="false">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="d-flex">
+                                    <i class="ti ti-database-share"></i>
+                                </span>
+                                <span class="hide-menu">Leave Allocation</span>
+                            </div>
+
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link justify-content-between"
+                           asp-area="" asp-controller="LeaveType" asp-action="Index"
+                           aria-expanded="false">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="d-flex">
+                                    <i class="ti ti-category"></i>
+                                </span>
+                                <span class="hide-menu">Leave Type</span>
+                            </div>
+
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link justify-content-between"
+                           asp-area="" asp-controller="Period" asp-action="Index"
+                           aria-expanded="false">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="d-flex">
+                                    <i class="ti ti-calendar"></i>
+                                </span>
+                                <span class="hide-menu">Periods</span>
+                            </div>
+
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link justify-content-between"
+                           asp-area="" asp-controller="LeaveAllocation" asp-action="Index"
+                           aria-expanded="false">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="d-flex">
+                                    <i class="fa-solid fa-users-gear"></i>
+                                </span>
+                                <span class="hide-menu">View Employees</span>
+                            </div>
+
+                        </a>
+                    </li> 
+                    <li class="sidebar-item">
+                        <a class="sidebar-link justify-content-between"
+                           asp-area="" asp-controller="LeaveRequest" asp-action="ListRequests"
+                           aria-expanded="false">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="d-flex">
+                                    <i class="fa-solid fa-gears"></i>
+                                </span>
+                                <span class="hide-menu">Manage Requests</span>
+                            </div>
+
+                        </a>
+                    </li>
+                }
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <li class="sidebar-item">
+                        <a class="sidebar-link justify-content-between"
+                         asp-action="Details" asp-controller="LeaveAllocation" asp-area=""
+                        aria-expanded="false">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="d-flex">
+                                    <i class="ti ti-layout-kanban"></i>
+                                </span>
+                                <span class="hide-menu">View Allocations</span>
+                            </div>
+
+                        </a>
+                    </li>
+                   
+                }
+                
+
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>

@@ -3,12 +3,14 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="d-flex justify-content-between">
+    <h3 class="text-center">Leave Types Items</h3>
 
-<h1>Leave Types Items</h1>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -31,9 +33,9 @@
                 @Html.DisplayFor(modelItem => item.Days)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning text-light"><i class="fa-solid fa-pen"></i>    Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <i class="fa-solid fa-list"></i>   Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i>   Delete</a>
             </td>
         </tr>
 }
